@@ -1,0 +1,8 @@
+{
+  "name": "MovieFlix",
+  "description": "A premium Netflix-style movie and video streaming application with beautiful cinematic players, watchlists, search and AdSense slots.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

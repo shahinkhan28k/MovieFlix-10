@@ -1,0 +1,180 @@
+@import "tailwindcss";
+
+:root {
+  --app-accent: #e50914;
+  --app-accent-hover: #b91c1c;
+  --app-accent-light: rgba(229, 9, 20, 0.15);
+  --app-bg-base: #080808;
+  --app-bg-surface: #121212;
+  --app-bg-card: #181818;
+  --app-border: #262626;
+  --app-text: #ffffff;
+  --app-text-muted: #a3a3a3;
+}
+
+/* Netflix Classic Dark */
+[data-theme="netflix"] {
+  --app-accent: #e50914;
+  --app-accent-hover: #b91c1c;
+  --app-accent-light: rgba(229, 9, 20, 0.15);
+  --app-bg-base: #080808;
+  --app-bg-surface: #121212;
+  --app-bg-card: #181818;
+  --app-border: #262626;
+  --app-text: #ffffff;
+  --app-text-muted: #a3a3a3;
+}
+
+/* Cyberpunk Neon 2077 */
+[data-theme="cyberpunk"] {
+  --app-accent: #06b6d4;
+  --app-accent-hover: #0284c7;
+  --app-accent-light: rgba(6, 182, 212, 0.2);
+  --app-bg-base: #070714;
+  --app-bg-surface: #0f0f24;
+  --app-bg-card: #151533;
+  --app-border: #1e1b4b;
+  --app-text: #f8fafc;
+  --app-text-muted: #94a3b8;
+}
+
+/* Midnight Luxury Gold */
+[data-theme="gold"] {
+  --app-accent: #f59e0b;
+  --app-accent-hover: #d97706;
+  --app-accent-light: rgba(245, 158, 11, 0.2);
+  --app-bg-base: #0a0a06;
+  --app-bg-surface: #14140c;
+  --app-bg-card: #1a1a10;
+  --app-border: #2e2a14;
+  --app-text: #fef3c7;
+  --app-text-muted: #d97706;
+}
+
+/* Emerald Mint Stream */
+[data-theme="emerald"] {
+  --app-accent: #10b981;
+  --app-accent-hover: #059669;
+  --app-accent-light: rgba(16, 185, 129, 0.2);
+  --app-bg-base: #040d0a;
+  --app-bg-surface: #0a1713;
+  --app-bg-card: #0f211c;
+  --app-border: #13332a;
+  --app-text: #ecfdf5;
+  --app-text-muted: #34d399;
+}
+
+/* Cosmic Velvet Purple */
+[data-theme="purple"] {
+  --app-accent: #a855f7;
+  --app-accent-hover: #7e22ce;
+  --app-accent-light: rgba(168, 85, 247, 0.2);
+  --app-bg-base: #0d0714;
+  --app-bg-surface: #150d22;
+  --app-bg-card: #1f1233;
+  --app-border: #321952;
+  --app-text: #faf5ff;
+  --app-text-muted: #c084fc;
+}
+
+/* Light Theme Mode Override */
+[data-mode="light"] {
+  --app-bg-base: #f8fafc;
+  --app-bg-surface: #ffffff;
+  --app-bg-card: #f1f5f9;
+  --app-border: #cbd5e1;
+  --app-text: #0f172a;
+  --app-text-muted: #64748b;
+}
+
+/* Override accent color if custom accent set */
+[data-accent="red"] {
+  --app-accent: #e50914;
+  --app-accent-hover: #b91c1c;
+  --app-accent-light: rgba(229, 9, 20, 0.15);
+}
+[data-accent="cyan"] {
+  --app-accent: #06b6d4;
+  --app-accent-hover: #0284c7;
+  --app-accent-light: rgba(6, 182, 212, 0.2);
+}
+[data-accent="gold"] {
+  --app-accent: #f59e0b;
+  --app-accent-hover: #d97706;
+  --app-accent-light: rgba(245, 158, 11, 0.2);
+}
+[data-accent="emerald"] {
+  --app-accent: #10b981;
+  --app-accent-hover: #059669;
+  --app-accent-light: rgba(16, 185, 129, 0.2);
+}
+[data-accent="purple"] {
+  --app-accent: #a855f7;
+  --app-accent-hover: #7e22ce;
+  --app-accent-light: rgba(168, 85, 247, 0.2);
+}
+[data-accent="rose"] {
+  --app-accent: #f43f5e;
+  --app-accent-hover: #e11d48;
+  --app-accent-light: rgba(244, 63, 94, 0.2);
+}
+
+/* Smooth theme transition */
+body {
+  background-color: var(--app-bg-base);
+  color: var(--app-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Utility Helpers */
+.app-accent-bg {
+  background-color: var(--app-accent) !important;
+}
+
+.app-accent-text {
+  color: var(--app-accent) !important;
+}
+
+.app-accent-border {
+  border-color: var(--app-accent) !important;
+}
+
+.app-bg-base {
+  background-color: var(--app-bg-base) !important;
+}
+
+.app-bg-surface {
+  background-color: var(--app-bg-surface) !important;
+}
+
+.app-bg-card {
+  background-color: var(--app-bg-card) !important;
+}
+
+.app-text-main {
+  color: var(--app-text) !important;
+}
+
+.app-text-muted {
+  color: var(--app-text-muted) !important;
+}
+
+.app-border {
+  border-color: var(--app-border) !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--app-bg-base);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--app-border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--app-accent);
+}

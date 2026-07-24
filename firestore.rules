@@ -1,0 +1,104 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Global helper functions
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+    
+    function isSignedIn() { 
+      return request.auth != null; 
+    }
+    
+    function isEmailVerified() { 
+      return isSignedIn() && request.auth.token.email_verified == true; 
+    }
+    
+    function isSuperAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == "djskshahin544@gmail.com" || 
+        request.auth.token.email == "admin@movieflix.com" || 
+        request.auth.token.email == "shahinkhan28qqqq@gmail.com" ||
+        request.auth.token.email == "shahinkhan28ddd@gmail.com" ||
+        request.auth.token.email == "shahinkhan28@gmail.com" ||
+        request.auth.token.email == "shahinkhan28r@gmail.com" ||
+        request.auth.token.email == "shahinkhan28uu@gmail.com"
+      );
+    }
+
+    function isAdmin() { 
+      return isSignedIn() && (
+        isSuperAdmin() ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+         (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin" ||
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "moderator" ||
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true ||
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isModerator == true)) ||
+        (request.auth.token.email != null && 
+         exists(/databases/$(database)/documents/user_roles/$(request.auth.token.email)) && 
+         (get(/databases/$(database)/documents/user_roles/$(request.auth.token.email)).data.role == "admin" ||
+          get(/databases/$(database)/documents/user_roles/$(request.auth.token.email)).data.role == "moderator"))
+      ); 
+    }
+
+    // Movies Collection Security
+    match /movies/{movieId} {
+      // Public read access is required so standard visitors can load the catalog on mount
+      allow read: if true;
+      
+      // Writes are restricted exclusively to verified admin and moderators
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Settings Collection Security (AdSense & App Configuration)
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Pre-assigned User Roles Collection Security
+    match /user_roles/{email} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    // Users Collection Security
+    match /users/{userId} {
+      // Owner or Admin read and write access
+      allow read: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow list: if isSignedIn();
+      allow create, update: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    // Movie validation schema helper
+    function isValidMovie(data) {
+      return data.keys().hasAll(['id', 'title', 'description', 'thumbnail', 'videoUrl', 'category', 'year', 'duration', 'rating', 'featured', 'views', 'likes', 'createdAt'])
+        && data.id is string && data.id.size() <= 128
+        && data.title is string && data.title.size() <= 200
+        && data.description is string && data.description.size() <= 5000
+        && data.thumbnail is string && data.thumbnail.size() <= 2048
+        && data.videoUrl is string && data.videoUrl.size() <= 2048
+        && data.category is string && data.category.size() <= 50
+        && data.year is int
+        && data.duration is string && data.duration.size() <= 20
+        && data.rating is string && data.rating.size() <= 10
+        && data.featured is bool
+        && data.views is int
+        && data.likes is int
+        && data.createdAt is string;
+    }
+
+    // User document validation helper (allows flexible user profile and permissions)
+    function isValidUser(data) {
+      return data.favorites is list
+        && data.watchHistory is list;
+    }
+  }
+}

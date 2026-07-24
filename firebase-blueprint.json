@@ -1,0 +1,113 @@
+{
+  "entities": {
+    "Movie": {
+      "title": "Movie",
+      "description": "A high-quality premium cinematic title available for streaming",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 5000
+        },
+        "thumbnail": {
+          "type": "string",
+          "maxLength": 2048
+        },
+        "videoUrl": {
+          "type": "string",
+          "maxLength": 2048
+        },
+        "category": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "year": {
+          "type": "integer"
+        },
+        "duration": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "rating": {
+          "type": "string",
+          "maxLength": 10
+        },
+        "featured": {
+          "type": "boolean"
+        },
+        "views": {
+          "type": "integer"
+        },
+        "likes": {
+          "type": "integer"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "description",
+        "thumbnail",
+        "videoUrl",
+        "category",
+        "year",
+        "duration",
+        "rating",
+        "featured",
+        "views",
+        "likes",
+        "createdAt"
+      ]
+    },
+    "User": {
+      "title": "User",
+      "description": "User preferences, favorites and watch history",
+      "type": "object",
+      "properties": {
+        "favorites": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          }
+        },
+        "watchHistory": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string", "maxLength": 128 },
+              "movieId": { "type": "string", "maxLength": 128 },
+              "title": { "type": "string", "maxLength": 200 },
+              "watchedAt": { "type": "string" },
+              "progress": { "type": "integer" }
+            },
+            "required": ["id", "movieId", "title", "watchedAt", "progress"]
+          }
+        }
+      },
+      "required": ["favorites", "watchHistory"]
+    }
+  },
+  "firestore": {
+    "/movies/{movieId}": {
+      "schema": "Movie",
+      "description": "Collection of streaming video assets"
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User preferences, favorites list, and playback watch history"
+    }
+  }
+}
